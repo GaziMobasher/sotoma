@@ -10,7 +10,7 @@ PL_P2 = os.path.join("platforms", "mainplat.png")
 AV_P = os.path.join("avatar", "sonic.png")
 EX_P = os.path.join("exit", "exit.png")
 
-def load_assets():
+def load_assets(scale):
     background_img = pygame.image.load(BG_P)
     background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
     
@@ -42,7 +42,7 @@ def load_assets():
         "exit": exit_img
     }
     
-def animation_assets():
+def animation_assets(scale):
     def load_and_scale(path):
         img = pygame.image.load(path).convert_alpha()
         return pygame.transform.scale(img, (30, 60))

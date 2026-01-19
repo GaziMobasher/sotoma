@@ -21,8 +21,15 @@ from blockt import exitblock
 pygame.init()
 
 # Screen settings
-WIDTH, HEIGHT = 800, 600
+BASE_WIDTH, BASE_HEIGHT = 800, 600
+
+NEW_WIDTH, NEW_HEIGHT = 1200, 900   # resolution editing
+
+SCALE = NEW_WIDTH / BASE_WIDTH
+
+WIDTH, HEIGHT = NEW_WIDTH, NEW_HEIGHT
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
 pygame.display.set_caption("Test 1")
 
 # Game settings
