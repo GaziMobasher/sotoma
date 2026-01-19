@@ -17,15 +17,13 @@ from player import (
 from blockt import dblocks
 import levels
 from blockt import exitblock
+from config import *
+
 
 pygame.init()
 
 # Screen settings
-BASE_WIDTH, BASE_HEIGHT = 800, 600
 
-NEW_WIDTH, NEW_HEIGHT = 1200, 900   # resolution editing
-
-SCALE = NEW_WIDTH / BASE_WIDTH
 
 WIDTH, HEIGHT = NEW_WIDTH, NEW_HEIGHT
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -36,8 +34,8 @@ pygame.display.set_caption("Test 1")
 clock = pygame.time.Clock()
 
 # Load images, animation frames
-assets = load_assets()
-anim_assets = animation_assets()
+assets = load_assets(SCALE)
+anim_assets = animation_assets(SCALE)
 load_animation_frames(anim_assets)
 
 background_img = assets["background"]
@@ -50,9 +48,26 @@ exit_img = assets["exit"]
 
 
 # Platform & buttons
-go_button_rect = pygame.Rect(WIDTH - 120, 40, 100, 40)
-back_button_rect = pygame.Rect(WIDTH - 120, HEIGHT - 60, 100, 40)
-exit_rect = pygame.Rect(550, 10, 100, 100)
+go_button_rect = pygame.Rect(
+    WIDTH - int(120 * SCALE),
+    int(40 * SCALE),
+    int(100 * SCALE),
+    int(40 * SCALE)
+)
+
+back_button_rect = pygame.Rect(
+    WIDTH - int(120 * SCALE),
+    HEIGHT - int(60 * SCALE),
+    int(100 * SCALE),
+    int(40 * SCALE)
+)
+
+exit_rect = pygame.Rect(
+    int(550 * SCALE),
+    int(10 * SCALE),
+    int(100 * SCALE),
+    int(100 * SCALE)
+)
 
 # Level state
 current_level = 1

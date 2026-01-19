@@ -1,0 +1,5 @@
+BASE_WIDTH = 800
+BASE_HEIGHT = 600
+NEW_WIDTH = 1920      # or your chosen resolution
+NEW_HEIGHT = 1080
+SCALE = NEW_WIDTH / BASE_WIDTH
