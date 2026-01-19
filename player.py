@@ -8,6 +8,7 @@ JUMP_RIGHT_FRAMES = []
 frame_index = 0
 animation_timer = 0
 ANIMATION_DELAY = 5  # Controls animation speed (lower is faster)
+JUMP_ANIMATION_DELAY = 10 # Controls jump animation speed
 
 def load_animation_frames(assets):
     global LEFT_FRAMES
@@ -167,22 +168,39 @@ def get_current_sprite():
     return None
 
 def update_animation():
-    global frame_index, animation_timer
+    global frame_index, animation_timer, jumping
+
     animation_timer += 1
 
+    # Choose active frames and delay
     if jumping:
         active_frames = JUMP_LEFT_FRAMES if facing_left else JUMP_RIGHT_FRAMES
+        delay = JUMP_ANIMATION_DELAY
     elif facing_left:
         active_frames = LEFT_FRAMES
+        delay = ANIMATION_DELAY
     elif facing_right:
         active_frames = RIGHT_FRAMES
+        delay = ANIMATION_DELAY
     else:
-        # active_frames = RIGHT_FRAMES
         active_frames = []
+        delay = ANIMATION_DELAY
 
-    if active_frames:
-        if animation_timer >= ANIMATION_DELAY:
-            animation_timer = 0
+    if not active_frames:
+        frame_index = 0
+        return
+
+    # Update frame only when timer reaches delay
+    if animation_timer >= delay:
+        animation_timer = 0
+
+        if jumping:
+            # NON-LOOPING jump animation
+            if frame_index < len(active_frames) - 1:
+                frame_index += 1
+            else:
+                # Stay on last jump frame
+                frame_index = len(active_frames) - 1
+        else:
+            # Normal looping walk animation
             frame_index = (frame_index + 1) % len(active_frames)
-    else:
-        frame_index = 0  # Reset when idle

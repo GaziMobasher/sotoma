@@ -81,11 +81,16 @@ while running:
 
     apply_gravity()
     update_position()
-    update_jump_state()
-    constrain_to_screen(WIDTH)
-    respawn_if_fallen(platform, HEIGHT)
+
+    # First resolve collisions (this sets on_ground correctly)
     check_platform_collision(platform)
     check_block_collision(rectangles, button_pressed)
+
+    # Now update jumping state using the UPDATED on_ground
+    update_jump_state()
+
+    constrain_to_screen(WIDTH)
+    respawn_if_fallen(platform, HEIGHT)
 
     # Drag logic
     dblocks.update_drag(rectangles, button_pressed)
