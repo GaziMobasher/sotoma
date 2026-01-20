@@ -68,13 +68,16 @@ player = pygame.Rect(PLAYER_START_X, PLAYER_START_Y, PLAYER_WIDTH, PLAYER_HEIGHT
 # Initialize player state
 player_velocity_x = 0
 player_velocity_y = 0
+facing_left = False
+facing_right = False
+
 on_ground = False
+
 dj = 0  # Double jump counter
 jump_pressed = False
 jumping = False
-facing_left = False
-facing_right = False
 double_jumping = False
+jumped_from_ground = False
 
 # Helper code for jumps and double jumps
 def reset_animation():
@@ -84,7 +87,7 @@ def reset_animation():
 
 def handle_movement(keys):
     global player_velocity_x, player_velocity_y, jump_pressed, dj, on_ground
-    global facing_left, facing_right, jumping, double_jumping
+    global facing_left, facing_right, jumping, double_jumping, jumped_from_ground
     player_velocity_x = 0
     facing_left = False
     facing_right = False
@@ -98,15 +101,33 @@ def handle_movement(keys):
 
     if keys[pygame.K_w] or keys[pygame.K_SPACE]:
         if not jump_pressed:
-            if on_ground:
+
+            # FIRST JUMP
+            if dj == 0:
                 player_velocity_y = JUMP_STRENGTH
                 dj = 1
-                double_jumping = False   # first jump
-            elif dj == 1:
+
+                if on_ground:
+                    # Jump started from ground = normal jump animation, double jump later allowed
+                    jumped_from_ground = True
+                    double_jumping = False
+
+                else:
+                    # Jump started from falling = THIS is the double jump animation
+                    jumped_from_ground = False      # no second jump allowed later
+                    double_jumping = True          
+
+                reset_animation()
+
+            # SECOND JUMP (double jump) — ONLY if first jump was from ground
+            elif dj == 1 and jumped_from_ground:
                 player_velocity_y = JUMP_STRENGTH
                 dj = 2
-                double_jumping = True
+                double_jumping = True               # second jump animation
                 reset_animation()
+
+            # Else: no more jumps allowed
+
             jump_pressed = True
             jumping = True
     else:
@@ -126,7 +147,7 @@ def update_position():
 
 # New global jumping code added here
 def update_jump_state():
-    global jumping, double_jumping, frame_index
+    global jumping, double_jumping, jumped_from_ground, frame_index, dj
 
     was_jumping = jumping
     jumping = not on_ground
@@ -135,6 +156,7 @@ def update_jump_state():
     if was_jumping and not jumping:
         frame_index = 0
         double_jumping = False
+        jumped_from_ground = False   #reset
         dj = 0
 
 def constrain_to_screen(width):
