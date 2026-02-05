@@ -184,26 +184,45 @@ def check_platform_collision(platform):
         on_ground = True
         dj = 0
 
-def check_block_collision(blocks, button_pressed):
+def check_block_collision(blocks):
     global player, player_velocity_x, player_velocity_y, on_ground, dj
+
+    # -------- HORIZONTAL COLLISION --------
+    player.x += player_velocity_x
     for rect in blocks:
         block = rect["rect"] if "rect" in rect else pygame.Rect(
-                rect["x"],
-                rect["y"],
-                int(170 * SCALE),
-                int(10 * SCALE)
-            )
-        if button_pressed and player.colliderect(block) and player_velocity_y > 0 and player.bottom >= block.top:
-            player.y = block.y - player.height
-            player_velocity_y = 0
-            on_ground = True
-            dj = 0
-
+            rect["x"],
+            rect["y"],
+            int(170 * SCALE),
+            int(10 * SCALE)
+        )
         if player.colliderect(block):
             if player_velocity_x > 0:
-                player.x = block.left - player.width
+                player.right = block.left
             elif player_velocity_x < 0:
-                player.x = block.right
+                player.left = block.right
+
+    # -------- VERTICAL COLLISION --------
+    player.y += player_velocity_y
+    on_ground = False
+
+    for rect in blocks:
+        block = rect["rect"] if "rect" in rect else pygame.Rect(
+            rect["x"],
+            rect["y"],
+            int(170 * SCALE),
+            int(10 * SCALE)
+        )
+        if player.colliderect(block):
+            if player_velocity_y > 0:  # landing
+                player.bottom = block.top
+                player_velocity_y = 0
+                on_ground = True
+                dj = 0
+            elif player_velocity_y < 0:  # hitting head
+                player.top = block.bottom
+                player_velocity_y = 0
+
 
 def get_current_sprite():
     global frame_index

@@ -18,6 +18,8 @@ from blockt import dblocks
 import levels
 from blockt import exitblock
 from config import *
+from reset import reset_level
+
 
 
 pygame.init()
@@ -91,6 +93,7 @@ while running:
                 button_pressed = True
             elif back_button_rect.collidepoint(mouse_x, mouse_y):
                 button_pressed = False
+                platform, rectangles = reset_level(current_level)
 
             dblocks.handle_mouse_down(rectangles, mouse_x, mouse_y, button_pressed)
 
@@ -102,11 +105,10 @@ while running:
         handle_movement(keys)
 
     apply_gravity()
-    update_position()
+    # update_position()
 
     # First resolve collisions (this sets on_ground correctly)
-    check_platform_collision(platform)
-    check_block_collision(rectangles, button_pressed)
+    check_block_collision(rectangles + [{"rect": platform}])
 
     # Now update jumping state using the UPDATED on_ground
     update_jump_state()
