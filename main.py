@@ -20,9 +20,7 @@ from reset import reset_level
 
 
 pygame.init()
-
 # Screen settings
-
 
 WIDTH, HEIGHT = NEW_WIDTH, NEW_HEIGHT
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -61,16 +59,9 @@ back_button_rect = pygame.Rect(
     int(40 * SCALE)
 )
 
-exit_rect = pygame.Rect(
-    int(550 * SCALE),
-    int(10 * SCALE),
-    int(100 * SCALE),
-    int(100 * SCALE)
-)
-
 # Level state
-current_level = 1
-platform, rectangles = levels.load_level(current_level)
+current_level = 2
+platform, rectangles, exit_rect = levels.load_level(current_level)
 
 # Game state
 button_pressed = False
@@ -90,7 +81,7 @@ while running:
                 button_pressed = True
             elif back_button_rect.collidepoint(mouse_x, mouse_y):
                 button_pressed = False
-                platform, rectangles = reset_level(current_level)
+                platform, rectangles, exit_rect = reset_level(current_level)
 
             dblocks.handle_mouse_down(rectangles, mouse_x, mouse_y, button_pressed)
 
@@ -136,12 +127,15 @@ while running:
     screen.blit(exit_img, (exit_rect.x + 10, exit_rect.y - 5))
     
     # Check if player touches the exit
-    current_level, new_platform, new_rectangles, reset_button = \
+    current_level, new_platform, new_rectangles, new_exit_rect, reset_button = \
     exitblock.check_exit_collision(player, exit_rect, current_level)
 
     if new_platform is not None:
-        platform, rectangles = reset_level(current_level)
+        platform = new_platform
+        rectangles = new_rectangles
+        exit_rect = new_exit_rect
         button_pressed = False
+
 
 
     pygame.display.update()

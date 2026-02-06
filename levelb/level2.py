@@ -10,4 +10,11 @@ def load():
         dblocks.create_block(300, 200),
 
     ]
-    return platform, blocks
+
+    exit_rect = pygame.Rect(
+        int(250 * SCALE),
+        int(8 * SCALE),
+        int(100 * SCALE),
+        int(100 * SCALE)
+    )
+    return platform, blocks, exit_rect

@@ -23,14 +23,14 @@ def check_exit_collision(player, exit_rect, current_level):
         if next_level > levels.TOTAL_LEVELS:
             next_level = 1
     
-        platform, rectangles = levels.load_level(next_level)
+        platform, rectangles, exit_rect = levels.load_level(next_level)
 
         # Reset position
         player.x = int(BASE_RESET_X * SCALE)
         player.y = int(BASE_RESET_Y * SCALE)
         reset_full_player_state()
 
-        return next_level, platform, rectangles, False
+        return next_level, platform, rectangles, exit_rect, False
 
 
-    return current_level, None, None, None
+    return current_level, None, None, None, None

@@ -9,4 +9,4 @@ def load_level(level_number):
         return module.load()
     except (ModuleNotFoundError, AttributeError):
         print(f"Level {level_number} not found.")
-        return pygame.Rect(0, 0, 0, 0), []
+        return pygame.Rect(0, 0, 0, 0), [], pygame.Rect(1920, 1080, 0, 0)
