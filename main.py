@@ -4,19 +4,16 @@ from player import (
     player,
     handle_movement,
     apply_gravity,
-    update_position,
     constrain_to_screen,
     respawn_if_fallen,
-    check_platform_collision,
     check_block_collision,
     get_current_sprite,
     load_animation_frames,
     update_animation,
     update_jump_state  
 )
-from blockt import dblocks
+from blockt import dblocks, exitblock
 import levels
-from blockt import exitblock
 from config import *
 from reset import reset_level
 

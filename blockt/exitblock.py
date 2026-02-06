@@ -13,7 +13,7 @@ def check_exit_collision(player, exit_rect, current_level):
 
     # --- SHRINK EXIT COLLISION ZONE ---
     shrink_x = int(40 * SCALE)   # horizontal shrink (left + right)
-    shrink_y = int(60 * SCALE)   # vertical shrink (top + bottom)
+    shrink_y = int(50 * SCALE)   # vertical shrink (top + bottom)
 
     exit_trigger = exit_rect.inflate(-shrink_x, -shrink_y)
 
@@ -22,7 +22,7 @@ def check_exit_collision(player, exit_rect, current_level):
 
         if next_level > levels.TOTAL_LEVELS:
             next_level = 1
-
+    
         platform, rectangles = levels.load_level(next_level)
 
         # Reset position
