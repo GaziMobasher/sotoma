@@ -59,7 +59,7 @@ PLAYER_START_Y = int((600 - 90) * SCALE)
 
 # Movement settings
 PLAYER_SPEED = 7
-JUMP_STRENGTH = -10
+JUMP_STRENGTH = -11
 GRAVITY = 0.5
 
 # Initialize player rectangle
@@ -288,3 +288,30 @@ def update_animation():
         else:
             # Looping walk
             frame_index = (frame_index + 1) % len(active_frames)
+
+def reset_full_player_state():
+    global frame_index, animation_timer
+    global player_velocity_x, player_velocity_y
+    global facing_left, facing_right
+    global jumping, double_jumping, jumped_from_ground
+    global on_ground, dj, jump_pressed
+
+    # Stop motion
+    player_velocity_x = 0
+    player_velocity_y = 0
+
+    # Reset animation
+    frame_index = 0
+    animation_timer = 0
+
+    # Reset direction
+    facing_left = False
+    facing_right = False
+
+    # Reset jump state
+    jumping = False
+    double_jumping = False
+    jumped_from_ground = False
+    on_ground = False
+    dj = 0
+    jump_pressed = False

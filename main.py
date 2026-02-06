@@ -103,15 +103,13 @@ while running:
     if button_pressed:
         keys = pygame.key.get_pressed()
         handle_movement(keys)
+        
+        apply_gravity()
 
-    apply_gravity()
-    # update_position()
+        check_block_collision(rectangles + [{"rect": platform}])
 
-    # First resolve collisions (this sets on_ground correctly)
-    check_block_collision(rectangles + [{"rect": platform}])
+        update_jump_state()
 
-    # Now update jumping state using the UPDATED on_ground
-    update_jump_state()
 
     constrain_to_screen(WIDTH)
     respawn_if_fallen(platform, HEIGHT)
@@ -141,11 +139,13 @@ while running:
     screen.blit(exit_img, (exit_rect.x + 10, exit_rect.y - 5))
     
     # Check if player touches the exit
-    current_level, new_platform, new_rectangles, reset_button = exitblock.check_exit_collision(player, exit_rect, current_level)
+    current_level, new_platform, new_rectangles, reset_button = \
+    exitblock.check_exit_collision(player, exit_rect, current_level)
+
     if new_platform is not None:
-        platform = new_platform
-        rectangles = new_rectangles
-        button_pressed = reset_button
+        platform, rectangles = reset_level(current_level)
+        button_pressed = False
+
 
     pygame.display.update()
     clock.tick(60)
