@@ -8,6 +8,8 @@ PL_P1 = os.path.join("platforms", "subplat.png")
 PL_P2 = os.path.join("platforms", "mainplat.png")
 AV_P = os.path.join("avatar", "sonic.png")
 EX_P = os.path.join("exit", "exit.png")
+S_P = os.path.join("platforms", "splat.png")
+
 
 def load_assets(scale):
     background_img = pygame.image.load(BG_P)
@@ -43,14 +45,20 @@ def load_assets(scale):
     back_img = pygame.image.load(BU_P2)
     back_img = pygame.transform.scale(
         back_img,
-        (int(80 * scale), int(30 * scale))
+        (int(80 * scale), int(80 * scale))
     )
     
     exit_img = pygame.image.load(EX_P)
     exit_img = pygame.transform.scale(
         exit_img,
-        (int(80 * scale), int(100 * scale))
+        (int(90 * scale), int(100 * scale))
     )
+    splat_img = pygame.image.load(S_P).convert_alpha()
+    splat_img = pygame.transform.scale(
+        splat_img,
+        (int(60 * scale), int(60 * scale))
+    )
+
 
     return {
         "background": background_img,
@@ -59,7 +67,8 @@ def load_assets(scale):
         "mainplat": mainplat_img,
         "start": start_img,
         "back": back_img,
-        "exit": exit_img
+        "exit": exit_img,
+        "splat": splat_img
     }
 
     

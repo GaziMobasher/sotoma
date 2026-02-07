@@ -187,40 +187,28 @@ def check_platform_collision(platform):
 def check_block_collision(blocks):
     global player, player_velocity_x, player_velocity_y, on_ground, dj
 
-    # -------- HORIZONTAL COLLISION --------
+    # -------- HORIZONTAL --------
     player.x += player_velocity_x
-    for rect in blocks:
-        block = rect["rect"] if "rect" in rect else pygame.Rect(
-            rect["x"],
-            rect["y"],
-            int(170 * SCALE),
-            int(10 * SCALE)
-        )
-        if player.colliderect(block):
+    for block in blocks:
+        if player.colliderect(block["rect"]):
             if player_velocity_x > 0:
-                player.right = block.left
+                player.right = block["rect"].left
             elif player_velocity_x < 0:
-                player.left = block.right
+                player.left = block["rect"].right
 
-    # -------- VERTICAL COLLISION --------
+    # -------- VERTICAL --------
     player.y += player_velocity_y
     on_ground = False
 
-    for rect in blocks:
-        block = rect["rect"] if "rect" in rect else pygame.Rect(
-            rect["x"],
-            rect["y"],
-            int(170 * SCALE),
-            int(10 * SCALE)
-        )
-        if player.colliderect(block):
-            if player_velocity_y > 0:  # landing
-                player.bottom = block.top
+    for block in blocks:
+        if player.colliderect(block["rect"]):
+            if player_velocity_y > 0:
+                player.bottom = block["rect"].top
                 player_velocity_y = 0
                 on_ground = True
                 dj = 0
-            elif player_velocity_y < 0:  # hitting head
-                player.top = block.bottom
+            elif player_velocity_y < 0:
+                player.top = block["rect"].bottom
                 player_velocity_y = 0
 
 

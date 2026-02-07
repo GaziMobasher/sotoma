@@ -11,11 +11,11 @@ reset_full_player_state()
 
 
 def reset_level(level_number):
-    platform, rectangles, exit_rect = levels.load_level(level_number)
+    platform, blocks, exit_rect = levels.load_level(level_number)
 
     player.x = PLAYER_START_X
     player.y = PLAYER_START_Y
 
     reset_full_player_state()
 
-    return platform, rectangles, exit_rect
+    return platform, blocks, exit_rect
