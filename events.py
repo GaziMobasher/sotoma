@@ -1,0 +1,33 @@
+# events.py
+import pygame
+from blockt import dblocks, sblocks
+
+def handle_events(
+    blocks,
+    go_button,
+    back_button,
+    reset_fn,
+    current_level,
+    button_pressed
+):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False, button_pressed, None
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mx, my = event.pos
+
+            if go_button.collidepoint(mx, my):
+                button_pressed = True
+            elif back_button.collidepoint(mx, my):
+                button_pressed = False
+                return True, button_pressed, reset_fn(current_level)
+
+            dblocks.handle_mouse_down(blocks, mx, my, button_pressed)
+            sblocks.handle_mouse_down(blocks, mx, my, button_pressed)
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            dblocks.handle_mouse_up(blocks)
+            sblocks.handle_mouse_up(blocks)
+
+    return True, button_pressed, None
