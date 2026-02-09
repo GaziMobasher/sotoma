@@ -33,8 +33,17 @@ def draw_world(
     for block in blocks:
         if block["kind"] == "rect":
             screen.blit(assets["subplat"], block["rect"].topleft)
+        # elif block["kind"] == "sphere":
+        #     screen.blit(assets["splat"], block["rect"].topleft)
         elif block["kind"] == "sphere":
-            screen.blit(assets["splat"], block["rect"].topleft)
+            splat_img = assets["splat"]
+
+            img_rect = splat_img.get_rect(
+                center=block["rect"].center
+            )
+
+            screen.blit(splat_img, img_rect.topleft)
+
 
     # UI
     screen.blit(assets["start"], (ui["go"].x + 10, ui["go"].y - 5))

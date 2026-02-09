@@ -201,15 +201,39 @@ def check_block_collision(blocks):
     on_ground = False
 
     for block in blocks:
-        if player.colliderect(block["rect"]):
-            if player_velocity_y > 0:
-                player.bottom = block["rect"].top
-                player_velocity_y = 0
-                on_ground = True
-                dj = 0
-            elif player_velocity_y < 0:
-                player.top = block["rect"].bottom
-                player_velocity_y = 0
+        rect = block["rect"]
+
+        if not player.colliderect(rect):
+            continue
+
+        # ---------- LANDING ----------
+        if player_velocity_y > 0:
+            player.bottom = rect.top
+            player_velocity_y = 0
+            on_ground = True
+            dj = 0
+
+            # SPHERE SLIP LOGIC
+            if block.get("kind") == "sphere":
+                radius = rect.width // 2
+                sphere_center_x = rect.centerx
+                player_center_x = player.centerx
+
+                # Horizontal offset from center (normalized)
+                offset = (player_center_x - sphere_center_x) / radius
+
+                # Clamp to prevent crazy speed
+                offset = max(-1, min(1, offset))
+
+                # Apply sideways slide
+                SLIP_STRENGTH = 3.2
+                player_velocity_x += offset * SLIP_STRENGTH
+
+        # ---------- HEAD HIT ----------
+        elif player_velocity_y < 0:
+            player.top = rect.bottom
+            player_velocity_y = 0
+
 
 
 def get_current_sprite():

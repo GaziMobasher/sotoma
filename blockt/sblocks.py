@@ -3,7 +3,7 @@ import pygame
 from config import NEW_HEIGHT, NEW_WIDTH, SCALE
 
 # Base (unscaled)
-BASE_DIAMETER = 40
+BASE_DIAMETER = 20
 
 # Screen size
 WIDTH = NEW_WIDTH

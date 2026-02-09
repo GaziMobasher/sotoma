@@ -56,7 +56,7 @@ def load_assets(scale):
     splat_img = pygame.image.load(S_P).convert_alpha()
     splat_img = pygame.transform.scale(
         splat_img,
-        (int(60 * scale), int(60 * scale))
+        (int(40 * scale), int(40 * scale))
     )
 
 
