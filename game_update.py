@@ -8,7 +8,8 @@ from player import (
     check_block_collision,
     update_jump_state
 )
-from blockt import dblocks, sblocks
+from blockt import dblocks, sblocks, destroblocks
+
 
 def update_game(
     button_pressed,
@@ -21,7 +22,11 @@ def update_game(
         keys = pygame.key.get_pressed()
         handle_movement(keys)
         apply_gravity()
+
         check_block_collision(blocks + [{"rect": platform}])
+
+        destroblocks.update_destroblocks(blocks)
+
         update_jump_state()
 
     constrain_to_screen(width)

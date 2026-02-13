@@ -6,7 +6,7 @@ from player import (
     load_animation_frames
 )
 
-from blockt import exitblock
+from blockt import destroblocks, exitblock
 import levels
 from config import *
 from reset import reset_level
@@ -50,7 +50,7 @@ back_button_rect = pygame.Rect(
 
 
 # -------------------- LEVEL STATE --------------------
-current_level = 3
+current_level = 4
 platform, blocks, exit_rect = levels.load_level(current_level)
 
 
@@ -87,6 +87,7 @@ while running:
         width=WIDTH,
         height=HEIGHT
     )
+
 
 
     # -------- LEVEL EXIT CHECK --------

@@ -190,6 +190,9 @@ def check_block_collision(blocks):
     # -------- HORIZONTAL --------
     player.x += player_velocity_x
     for block in blocks:
+        if block.get("destroyed"):
+            continue
+
         if player.colliderect(block["rect"]):
             if player_velocity_x > 0:
                 player.right = block["rect"].left
@@ -201,6 +204,10 @@ def check_block_collision(blocks):
     on_ground = False
 
     for block in blocks:
+        if block.get("destroyed") or block.get("falling"):
+            continue
+
+
         rect = block["rect"]
 
         if not player.colliderect(rect):
@@ -213,19 +220,22 @@ def check_block_collision(blocks):
             on_ground = True
             dj = 0
 
+            # DESTRO BLOCK LOGIC
+            if block.get("kind") == "destro":
+                if not block["breaking"]:
+                    block["breaking"] = True
+                    block["break_timer"] = pygame.time.get_ticks()
+
+
             # SPHERE SLIP LOGIC
             if block.get("kind") == "sphere":
                 radius = rect.width // 2
                 sphere_center_x = rect.centerx
                 player_center_x = player.centerx
 
-                # Horizontal offset from center (normalized)
                 offset = (player_center_x - sphere_center_x) / radius
-
-                # Clamp to prevent crazy speed
                 offset = max(-1, min(1, offset))
 
-                # Apply sideways slide
                 SLIP_STRENGTH = 3.2
                 player_velocity_x += offset * SLIP_STRENGTH
 
@@ -233,7 +243,6 @@ def check_block_collision(blocks):
         elif player_velocity_y < 0:
             player.top = rect.bottom
             player_velocity_y = 0
-
 
 
 def get_current_sprite():

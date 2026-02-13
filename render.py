@@ -1,6 +1,7 @@
 # render.py
 import pygame
 from player import get_current_sprite, update_animation
+import random
 
 def draw_world(
     screen,
@@ -33,8 +34,16 @@ def draw_world(
     for block in blocks:
         if block["kind"] == "rect":
             screen.blit(assets["subplat"], block["rect"].topleft)
-        # elif block["kind"] == "sphere":
-        #     screen.blit(assets["splat"], block["rect"].topleft)
+        
+        elif block["kind"] == "destro":
+            if block.get("breaking"):
+                shake_x = random.randint(-2, 2)
+                shake_y = random.randint(-2, 2)
+                screen.blit(assets["dplat"], (block["rect"].x + shake_x, block["rect"].y + shake_y))
+            else:
+                screen.blit(assets["dplat"], block["rect"].topleft)
+
+            
         elif block["kind"] == "sphere":
             splat_img = assets["splat"]
 
@@ -43,6 +52,7 @@ def draw_world(
             )
 
             screen.blit(splat_img, img_rect.topleft)
+        
 
 
     # UI
