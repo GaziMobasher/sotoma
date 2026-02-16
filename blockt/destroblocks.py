@@ -169,24 +169,28 @@ def update_destroblocks(blocks):
     current_time = pygame.time.get_ticks()
 
     for block in blocks:
-        if block["destroyed"]:
+
+        # Skip non-destro blocks
+        if block.get("kind") != "destro":
+            continue
+
+        if block.get("destroyed"):
             continue
 
         # -------- BREAK TIMER --------
-        if block["breaking"] and not block["falling"]:
+        if block.get("breaking") and not block.get("falling"):
             if current_time - block["break_timer"] >= 1500:
                 block["falling"] = True
 
-                # random slight slide direction
                 import random
                 block["slide_velocity"] = random.choice([-2, 2])
 
         # -------- FALLING PHYSICS --------
-        if block["falling"]:
-            block["fall_velocity"] += 0.5  # gravity
+        if block.get("falling"):
+            block["fall_velocity"] += 0.5
             block["rect"].y += block["fall_velocity"]
             block["rect"].x += block["slide_velocity"]
 
-            # Once fully off screen → destroy permanently
             if block["rect"].top > HEIGHT:
                 block["destroyed"] = True
+

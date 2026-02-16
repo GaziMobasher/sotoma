@@ -16,14 +16,13 @@ def load():
     # Rectangular draggable platforms
     blocks = [
         destroblocks.create_destroblock(200, 450),
-        destroblocks.create_destroblock(500, 180),
-        destroblocks.create_destroblock(320, 190)
-  
+        sblocks.create_sblock(190, 180),
+        
     ]
 
     # Exit
     exit_rect = pygame.Rect(
-        int(20 * SCALE),
+        int(590 * SCALE),
         int(-2 * SCALE),
         int(100 * SCALE),
         int(100 * SCALE)
