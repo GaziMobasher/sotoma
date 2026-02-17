@@ -1,9 +1,10 @@
-# events.py
 import pygame
-from blockt import dblocks, sblocks
+from blockt import dblocks, sblocks, destroblocks
 
 def handle_events(
-    blocks,
+    normalblocks,
+    specialblocks,
+    hazardblocks,
     go_button,
     back_button,
     reset_fn,
@@ -11,6 +12,7 @@ def handle_events(
     button_pressed
 ):
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             return False, button_pressed, None
 
@@ -19,15 +21,19 @@ def handle_events(
 
             if go_button.collidepoint(mx, my):
                 button_pressed = True
+
             elif back_button.collidepoint(mx, my):
                 button_pressed = False
                 return True, button_pressed, reset_fn(current_level)
 
-            dblocks.handle_mouse_down(blocks, mx, my, button_pressed)
-            sblocks.handle_mouse_down(blocks, mx, my, button_pressed)
+            # Drag only normal + special
+            dblocks.handle_mouse_down(normalblocks, mx, my, button_pressed)
+            sblocks.handle_mouse_down(normalblocks, mx, my, button_pressed)
+            destroblocks.handle_mouse_down(specialblocks, mx, my, button_pressed)
 
         if event.type == pygame.MOUSEBUTTONUP:
-            dblocks.handle_mouse_up(blocks)
-            sblocks.handle_mouse_up(blocks)
+            dblocks.handle_mouse_up(normalblocks)
+            sblocks.handle_mouse_up(normalblocks)
+            destroblocks.handle_mouse_up(specialblocks)
 
     return True, button_pressed, None

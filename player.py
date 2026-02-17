@@ -193,6 +193,9 @@ def check_block_collision(blocks):
         if block.get("destroyed"):
             continue
 
+        if block.get("kind") == "xblock":
+            continue
+
         if player.colliderect(block["rect"]):
             if player_velocity_x > 0:
                 player.right = block["rect"].left
@@ -207,6 +210,8 @@ def check_block_collision(blocks):
         if block.get("destroyed") or block.get("falling"):
             continue
 
+        if block.get("kind") == "xblock":
+            continue
 
         rect = block["rect"]
 

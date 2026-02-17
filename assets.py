@@ -10,6 +10,7 @@ AV_P = os.path.join("avatar", "sonic.png")
 EX_P = os.path.join("exit", "exit.png")
 S_P = os.path.join("platforms", "splat.png")
 DPL_P = os.path.join("platforms", "dplat.png")
+X_P = os.path.join("platforms", "xplat.png")
 
 
 
@@ -67,6 +68,12 @@ def load_assets(scale):
         (int(50 * scale), int(50 * scale))  # Adjust height if needed
     )
 
+    xplat_img = pygame.image.load(X_P).convert_alpha()
+    xplat_img = pygame.transform.scale(
+        xplat_img,
+        (int(80 * scale), int(80 * scale))  
+    )
+
     return {
         "background": background_img,
         "player": player_img,
@@ -76,7 +83,8 @@ def load_assets(scale):
         "back": back_img,
         "exit": exit_img,
         "splat": splat_img,
-        "dplat": dplat_img
+        "dplat": dplat_img,
+        "xplat": xplat_img
     }
 
     

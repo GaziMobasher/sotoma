@@ -11,7 +11,7 @@ import levels
 from config import *
 from reset import reset_level
 
-# NEW modular imports
+# Modular imports
 from render import draw_world
 from events import handle_events
 from game_update import update_game
@@ -50,8 +50,13 @@ back_button_rect = pygame.Rect(
 
 
 # -------------------- LEVEL STATE --------------------
-current_level = 5
+current_level = 1
 platform, blocks, exit_rect = levels.load_level(current_level)
+
+# Split blocks into separate lists
+specialblocks = [b for b in blocks if b.get("kind") == "destro"]
+hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
+normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock")]
 
 
 # -------------------- GAME STATE --------------------
@@ -64,7 +69,9 @@ while running:
 
     # -------- EVENTS --------
     running, button_pressed, reset_data = handle_events(
-        blocks=blocks,
+        normalblocks=normalblocks,
+        specialblocks=specialblocks,
+        hazardblocks=hazardblocks,
         go_button=go_button_rect,
         back_button=back_button_rect,
         reset_fn=reset_level,
@@ -78,16 +85,22 @@ while running:
     if reset_data:
         platform, blocks, exit_rect = reset_data
 
+        # Re-split after reset
+        specialblocks = [b for b in blocks if b.get("kind") == "destro"]
+        hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
+        normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock")]
+
 
     # -------- UPDATE --------
     update_game(
         button_pressed=button_pressed,
-        blocks=blocks,
+        normalblocks=normalblocks,
+        specialblocks=specialblocks,
+        hazardblocks=hazardblocks,
         platform=platform,
         width=WIDTH,
         height=HEIGHT
     )
-
 
 
     # -------- LEVEL EXIT CHECK --------
@@ -100,13 +113,18 @@ while running:
         exit_rect = new_exit_rect
         button_pressed = False
 
+        #Re-split after level change
+        specialblocks = [b for b in blocks if b.get("kind") == "destro"]
+        hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
+        normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock")]
+
 
     # -------- DRAW --------
     draw_world(
         screen=screen,
         assets=assets,
         platform=platform,
-        blocks=blocks,
+        blocks=normalblocks + specialblocks + hazardblocks,
         player=player,
         exit_rect=exit_rect,
         ui={
@@ -117,6 +135,5 @@ while running:
 
     pygame.display.update()
     clock.tick(60)
-
 
 pygame.quit()

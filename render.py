@@ -52,6 +52,11 @@ def draw_world(
             )
 
             screen.blit(splat_img, img_rect.topleft)
+
+        elif block["kind"] == "xblock":
+            screen.blit(assets["xplat"], block["rect"].topleft)
+
+
         
 
 

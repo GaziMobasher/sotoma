@@ -80,6 +80,8 @@ def update_drag(spheres, button_pressed):
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
     for sphere in spheres:
+        if sphere.get("kind") != "sphere":
+            continue
         if sphere["dragging"]:
             new_x = mouse_x + sphere["offset_x"]
             new_y = mouse_y + sphere["offset_y"]

@@ -75,7 +75,10 @@ def update_drag(blocks, button_pressed):
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
     for block in blocks:
-        if block["dragging"]:
+        if block.get("kind") != "rect":
+            continue
+
+        if block.get("dragging"):
             new_x = mouse_x + block["offset_x"]
             new_y = mouse_y + block["offset_y"]
 
@@ -84,6 +87,7 @@ def update_drag(blocks, button_pressed):
 
             block["rect"].x = new_x
             block["rect"].y = new_y
+
 
 
 def handle_mouse_up(blocks):
