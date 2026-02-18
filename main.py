@@ -91,6 +91,7 @@ while running:
         specialblocks = [b for b in blocks if b.get("kind") == "destro"]
         hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
         normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock")]
+        gooblocks = [b for b in blocks if b.get("kind") == "goo"]
 
 
     # -------- UPDATE --------
@@ -120,6 +121,7 @@ while running:
         specialblocks = [b for b in blocks if b.get("kind") == "destro"]
         hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
         normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock")]
+        gooblocks = [b for b in blocks if b.get("kind") == "goo"]
 
 
     # -------- DRAW --------

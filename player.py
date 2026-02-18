@@ -184,7 +184,8 @@ def check_platform_collision(platform):
         dj = 0
 
 def check_block_collision(blocks):
-    global player, player_velocity_x, player_velocity_y, on_ground, dj
+    global player, player_velocity_x, player_velocity_y, on_ground, dj, FRICTION
+    FRICTION = 1.0
 
 
     # -------- HORIZONTAL --------
@@ -225,13 +226,6 @@ def check_block_collision(blocks):
             on_ground = True
             dj = 0
 
-            # GOO BLOCK LOGIC
-            if block.get("kind") == "goo":
-                FRICTION = 0.2
-            else:
-                FRICTION = 1.0
-            
-
             # DESTRO BLOCK LOGIC
             if block.get("kind") == "destro":
                 if not block["breaking"]:
@@ -258,6 +252,20 @@ def check_block_collision(blocks):
         elif player_velocity_y < 0:
             player.top = rect.bottom
             player_velocity_y = 0
+    
+    # -------- SURFACE CHECK FOR FRICTION --------
+    if on_ground:
+        for block in blocks:
+            if block.get("kind") == "goo":
+                rect = block["rect"]
+                if (
+                    player.bottom == rect.top and
+                    player.right > rect.left and
+                    player.left < rect.right
+                ):
+                    FRICTION = 0.4
+                    break
+
 
 
 def get_current_sprite():

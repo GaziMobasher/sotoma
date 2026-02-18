@@ -15,7 +15,8 @@ def load():
 
     # Rectangular draggable platforms
     blocks = [
-        gblocks.create_gblock(150, 260)
+        gblocks.create_gblock(150, 260),
+        gblocks.create_gblock(280, 260)
     ]
 
     # Exit
