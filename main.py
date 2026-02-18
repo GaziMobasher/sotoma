@@ -50,7 +50,7 @@ back_button_rect = pygame.Rect(
 
 
 # -------------------- LEVEL STATE --------------------
-current_level = 8
+current_level = 9
 platform, blocks, exit_rect = levels.load_level(current_level)
 
 # Split blocks into separate lists
