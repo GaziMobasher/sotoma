@@ -61,6 +61,7 @@ PLAYER_START_Y = int((600 - 90) * SCALE)
 PLAYER_SPEED = 7
 JUMP_STRENGTH = -11
 GRAVITY = 0.5
+FRICTION = 1.0
 
 # Initialize player rectangle
 player = pygame.Rect(PLAYER_START_X, PLAYER_START_Y, PLAYER_WIDTH, PLAYER_HEIGHT)
@@ -93,10 +94,10 @@ def handle_movement(keys):
     facing_right = False
     
     if keys[pygame.K_a]:
-        player_velocity_x = -PLAYER_SPEED
+        player_velocity_x = -PLAYER_SPEED * FRICTION
         facing_left = True
     if keys[pygame.K_d]:
-        player_velocity_x = PLAYER_SPEED
+        player_velocity_x = PLAYER_SPEED * FRICTION
         facing_right = True
 
     if keys[pygame.K_w] or keys[pygame.K_SPACE]:
@@ -104,7 +105,7 @@ def handle_movement(keys):
 
             # FIRST JUMP
             if dj == 0:
-                player_velocity_y = JUMP_STRENGTH
+                player_velocity_y = JUMP_STRENGTH * FRICTION
                 dj = 1
 
                 if on_ground:
@@ -121,7 +122,7 @@ def handle_movement(keys):
 
             # SECOND JUMP (double jump) — ONLY if first jump was from ground
             elif dj == 1 and jumped_from_ground:
-                player_velocity_y = JUMP_STRENGTH
+                player_velocity_y = JUMP_STRENGTH * FRICTION
                 dj = 2
                 double_jumping = True               # second jump animation
                 reset_animation()
@@ -133,8 +134,6 @@ def handle_movement(keys):
     else:
         jump_pressed = False
         
-    # if on_ground:
-    #     jumping = False
 
 def apply_gravity():
     global player_velocity_y
@@ -187,6 +186,7 @@ def check_platform_collision(platform):
 def check_block_collision(blocks):
     global player, player_velocity_x, player_velocity_y, on_ground, dj
 
+
     # -------- HORIZONTAL --------
     player.x += player_velocity_x
     for block in blocks:
@@ -225,6 +225,13 @@ def check_block_collision(blocks):
             on_ground = True
             dj = 0
 
+            # GOO BLOCK LOGIC
+            if block.get("kind") == "goo":
+                FRICTION = 0.2
+            else:
+                FRICTION = 1.0
+            
+
             # DESTRO BLOCK LOGIC
             if block.get("kind") == "destro":
                 if not block["breaking"]:
@@ -243,6 +250,9 @@ def check_block_collision(blocks):
 
                 SLIP_STRENGTH = 3.2
                 player_velocity_x += offset * SLIP_STRENGTH
+
+            
+
 
         # ---------- HEAD HIT ----------
         elif player_velocity_y < 0:

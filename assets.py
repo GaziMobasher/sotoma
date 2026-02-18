@@ -11,6 +11,7 @@ EX_P = os.path.join("exit", "exit.png")
 S_P = os.path.join("platforms", "splat.png")
 DPL_P = os.path.join("platforms", "dplat.png")
 X_P = os.path.join("platforms", "xplat.png")
+G_P = os.path.join("platforms", "gooplat.png")
 
 
 
@@ -74,6 +75,12 @@ def load_assets(scale):
         (int(80 * scale), int(80 * scale))  
     )
 
+    gooplat_img = pygame.image.load(G_P).convert_alpha()
+    gooplat_img = pygame.transform.scale(
+        gooplat_img,
+        (int(120 * scale), int(20 * scale))  
+    )
+
     return {
         "background": background_img,
         "player": player_img,
@@ -84,7 +91,8 @@ def load_assets(scale):
         "exit": exit_img,
         "splat": splat_img,
         "dplat": dplat_img,
-        "xplat": xplat_img
+        "xplat": xplat_img,
+        "gplat": gooplat_img
     }
 
     

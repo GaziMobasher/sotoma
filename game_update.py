@@ -1,4 +1,5 @@
 import pygame
+import player as player_module
 from player import (
     handle_movement,
     apply_gravity,
@@ -8,7 +9,10 @@ from player import (
     update_jump_state,
 )
 
-from blockt import dblocks, sblocks, destroblocks, xblocks
+from blockt import dblocks, sblocks, destroblocks, xblocks, gblocks
+
+
+
 
 
 def update_game(
@@ -16,6 +20,7 @@ def update_game(
     normalblocks,
     specialblocks,   # destroblocks
     hazardblocks,    # xblocks
+    gooblocks,
     platform,
     width,
     height
@@ -27,8 +32,9 @@ def update_game(
 
         # Only solid blocks go into collision
         check_block_collision(
-            normalblocks + specialblocks + [{"rect": platform}]
+            normalblocks + specialblocks + gooblocks + [{"rect": platform}]
         )
+
 
         # Hazard logic
         xblocks.update_xblocks(hazardblocks)
@@ -45,3 +51,4 @@ def update_game(
     dblocks.update_drag(normalblocks, button_pressed)
     sblocks.update_drag(normalblocks, button_pressed)
     destroblocks.update_drag(specialblocks, button_pressed)
+    gblocks.update_drag(gooblocks, button_pressed)

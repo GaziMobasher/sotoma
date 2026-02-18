@@ -56,10 +56,11 @@ def draw_world(
         elif block["kind"] == "xblock":
             screen.blit(assets["xplat"], block["rect"].topleft)
 
+        elif block["kind"] == "goo":
+            screen.blit(assets["gplat"], block["rect"].topleft)
+
 
         
-
-
     # UI
     screen.blit(assets["start"], (ui["go"].x + 10, ui["go"].y - 5))
     screen.blit(assets["back"], (ui["back"].x + 10, ui["back"].y - 5))

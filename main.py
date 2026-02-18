@@ -6,7 +6,7 @@ from player import (
     load_animation_frames
 )
 
-from blockt import destroblocks, exitblock
+from blockt import destroblocks, exitblock, gblocks
 import levels
 from config import *
 from reset import reset_level
@@ -50,13 +50,14 @@ back_button_rect = pygame.Rect(
 
 
 # -------------------- LEVEL STATE --------------------
-current_level = 1
+current_level = 8
 platform, blocks, exit_rect = levels.load_level(current_level)
 
 # Split blocks into separate lists
 specialblocks = [b for b in blocks if b.get("kind") == "destro"]
 hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
-normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock")]
+gooblocks = [b for b in blocks if b.get("kind") == "goo"]
+normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock", "goo")]
 
 
 # -------------------- GAME STATE --------------------
@@ -72,6 +73,7 @@ while running:
         normalblocks=normalblocks,
         specialblocks=specialblocks,
         hazardblocks=hazardblocks,
+        gooblocks=gooblocks,
         go_button=go_button_rect,
         back_button=back_button_rect,
         reset_fn=reset_level,
@@ -97,6 +99,7 @@ while running:
         normalblocks=normalblocks,
         specialblocks=specialblocks,
         hazardblocks=hazardblocks,
+        gooblocks=gooblocks,
         platform=platform,
         width=WIDTH,
         height=HEIGHT
@@ -124,7 +127,7 @@ while running:
         screen=screen,
         assets=assets,
         platform=platform,
-        blocks=normalblocks + specialblocks + hazardblocks,
+        blocks=normalblocks + specialblocks + hazardblocks + gooblocks,
         player=player,
         exit_rect=exit_rect,
         ui={
