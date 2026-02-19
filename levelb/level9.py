@@ -17,6 +17,8 @@ def load():
     blocks = [
         xblocks.create_xblock(300, 60),
         gblocks.create_gblock(400, 120),
+        gblocks.create_gblock(400, 180),
+        gblocks.create_gblock(400, 240),
         sblocks.create_sblock(160, 160)
     ]
 
