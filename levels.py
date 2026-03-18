@@ -1,7 +1,7 @@
 import importlib
 import pygame
 
-TOTAL_LEVELS = 10  # Set your total number of levels
+TOTAL_LEVELS = 10
 
 def load_level(level_number):
     try:

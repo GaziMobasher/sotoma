@@ -1,7 +1,7 @@
 import pygame
 from config import SCALE
 
-# Animation settings
+# -------------------- ANIMATION SETTINGS --------------------
 LEFT_FRAMES = []
 RIGHT_FRAMES = []
 JUMP_LEFT_FRAMES = []
@@ -10,77 +10,52 @@ DOUBLE_JUMP_LEFT_FRAMES = []
 DOUBLE_JUMP_RIGHT_FRAMES = []
 frame_index = 0
 animation_timer = 0
-ANIMATION_DELAY = 5  # Controls animation speed (lower is faster)
-JUMP_ANIMATION_DELAY = 12 # Controls jump animation speed
-DOUBLE_JUMP_ANIMATION_DELAY = 6 # Controls double jump animation speed
+ANIMATION_DELAY = 5
+JUMP_ANIMATION_DELAY = 12
+DOUBLE_JUMP_ANIMATION_DELAY = 6
 
-
-def load_animation_frames(assets):
-    global LEFT_FRAMES, RIGHT_FRAMES
-    global JUMP_LEFT_FRAMES, JUMP_RIGHT_FRAMES
-    global DOUBLE_JUMP_LEFT_FRAMES, DOUBLE_JUMP_RIGHT_FRAMES
-
-    LEFT_FRAMES = [
-        assets["pl1"], assets["pl2"], assets["pl3"],
-        assets["pl4"], assets["pl5"], assets["pl6"]
-    ]
-
-    RIGHT_FRAMES = [
-        assets["pr1"], assets["pr2"], assets["pr3"],
-        assets["pr4"], assets["pr5"], assets["pr6"]
-    ]
-
-    # First jump
-    JUMP_LEFT_FRAMES = [
-        assets["jl1"], assets["jl2"], assets["jl3"], assets["jl4"]
-    ]
-    JUMP_RIGHT_FRAMES = [
-        assets["jr1"], assets["jr2"], assets["jr3"], assets["jr4"]
-    ]
-
-    # Double jump
-    DOUBLE_JUMP_LEFT_FRAMES = [
-        assets["djl1"], assets["djl2"], assets["djl3"],
-        assets["djl4"], assets["djl5"], assets["djl6"]
-    ]
-
-    DOUBLE_JUMP_RIGHT_FRAMES = [
-        assets["djlr"], assets["djr2"], assets["djr3"],
-        assets["djr4"], assets["djr5"], assets["djr6"]
-    ]
-    
-
-# Player settings
+# -------------------- PLAYER SETTINGS --------------------
 PLAYER_WIDTH = int(30 * SCALE)
 PLAYER_HEIGHT = int(60 * SCALE)
 PLAYER_START_X = int(350 * SCALE)
 PLAYER_START_Y = int((600 - 90) * SCALE)
 
-
-# Movement settings
 PLAYER_SPEED = 7
 JUMP_STRENGTH = -11
 GRAVITY = 0.5
 FRICTION = 1.0
 
-# Initialize player rectangle
 player = pygame.Rect(PLAYER_START_X, PLAYER_START_Y, PLAYER_WIDTH, PLAYER_HEIGHT)
 
-# Initialize player state
 player_velocity_x = 0
 player_velocity_y = 0
 facing_left = False
 facing_right = False
-
 on_ground = False
-
-dj = 0  # Double jump counter
+dj = 0
 jump_pressed = False
 jumping = False
 double_jumping = False
 jumped_from_ground = False
 
-# Helper code for jumps and double jumps
+# -------------------- ASSET LOADING --------------------
+def load_animation_frames(assets):
+    global LEFT_FRAMES, RIGHT_FRAMES
+    global JUMP_LEFT_FRAMES, JUMP_RIGHT_FRAMES
+    global DOUBLE_JUMP_LEFT_FRAMES, DOUBLE_JUMP_RIGHT_FRAMES
+
+    LEFT_FRAMES = [assets["pl1"], assets["pl2"], assets["pl3"],
+                   assets["pl4"], assets["pl5"], assets["pl6"]]
+    RIGHT_FRAMES = [assets["pr1"], assets["pr2"], assets["pr3"],
+                    assets["pr4"], assets["pr5"], assets["pr6"]]
+    JUMP_LEFT_FRAMES = [assets["jl1"], assets["jl2"], assets["jl3"], assets["jl4"]]
+    JUMP_RIGHT_FRAMES = [assets["jr1"], assets["jr2"], assets["jr3"], assets["jr4"]]
+    DOUBLE_JUMP_LEFT_FRAMES = [assets["djl1"], assets["djl2"], assets["djl3"],
+                               assets["djl4"], assets["djl5"], assets["djl6"]]
+    DOUBLE_JUMP_RIGHT_FRAMES = [assets["djlr"], assets["djr2"], assets["djr3"],
+                                assets["djr4"], assets["djr5"], assets["djr6"]]
+
+# -------------------- MOVEMENT --------------------
 def reset_animation():
     global frame_index, animation_timer
     frame_index = 0
@@ -92,7 +67,7 @@ def handle_movement(keys):
     player_velocity_x = 0
     facing_left = False
     facing_right = False
-    
+
     if keys[pygame.K_a]:
         player_velocity_x = -PLAYER_SPEED * FRICTION
         facing_left = True
@@ -102,38 +77,25 @@ def handle_movement(keys):
 
     if keys[pygame.K_w] or keys[pygame.K_SPACE]:
         if not jump_pressed:
-
-            # FIRST JUMP
             if dj == 0:
                 player_velocity_y = JUMP_STRENGTH * FRICTION
                 dj = 1
-
                 if on_ground:
-                    # Jump started from ground = normal jump animation, double jump later allowed
                     jumped_from_ground = True
                     double_jumping = False
-
                 else:
-                    # Jump started from falling = THIS is the double jump animation
-                    jumped_from_ground = False      # no second jump allowed later
-                    double_jumping = True          
-
+                    jumped_from_ground = False
+                    double_jumping = True
                 reset_animation()
-
-            # SECOND JUMP (double jump) — ONLY if first jump was from ground
             elif dj == 1 and jumped_from_ground:
                 player_velocity_y = JUMP_STRENGTH * FRICTION
                 dj = 2
-                double_jumping = True               # second jump animation
+                double_jumping = True
                 reset_animation()
-
-            # Else: no more jumps allowed
-
             jump_pressed = True
             jumping = True
     else:
         jump_pressed = False
-        
 
 def apply_gravity():
     global player_velocity_y
@@ -144,18 +106,14 @@ def update_position():
     player.x += player_velocity_x
     player.y += player_velocity_y
 
-# New global jumping code added here
 def update_jump_state():
     global jumping, double_jumping, jumped_from_ground, frame_index, dj
-
     was_jumping = jumping
     jumping = not on_ground
-
-    # If just landed
     if was_jumping and not jumping:
         frame_index = 0
         double_jumping = False
-        jumped_from_ground = False   #reset
+        jumped_from_ground = False
         dj = 0
 
 def constrain_to_screen(width):
@@ -174,104 +132,72 @@ def respawn_if_fallen(platform, height):
         on_ground = True
         dj = 0
 
-def check_platform_collision(platform):
-    global player, player_velocity_y, on_ground, dj
-    on_ground = False
-    if player.colliderect(platform):
-        player.y = platform.y - player.height
-        player_velocity_y = 0
-        on_ground = True
-        dj = 0
-
+# -------------------- COLLISION --------------------
 def check_block_collision(blocks):
     global player, player_velocity_x, player_velocity_y, on_ground, dj, FRICTION
     FRICTION = 1.0
 
-
-    # -------- HORIZONTAL --------
+    # Horizontal movement
     player.x += player_velocity_x
     for block in blocks:
-        if block.get("destroyed"):
-            continue
-
         if block.get("kind") == "xblock":
             continue
-
+        if block.get("state") in ("falling", "respawning"):
+            continue
         if player.colliderect(block["rect"]):
             if player_velocity_x > 0:
                 player.right = block["rect"].left
             elif player_velocity_x < 0:
                 player.left = block["rect"].right
 
-    # -------- VERTICAL --------
+    # Vertical movement
     player.y += player_velocity_y
     on_ground = False
-
     for block in blocks:
-        if block.get("destroyed") or block.get("falling"):
-            continue
-
         if block.get("kind") == "xblock":
+            continue
+        if block.get("state") in ("falling", "respawning"):
             continue
 
         rect = block["rect"]
-
         if not player.colliderect(rect):
             continue
 
-        # ---------- LANDING ----------
+        # Landing
         if player_velocity_y > 0:
             player.bottom = rect.top
             player_velocity_y = 0
             on_ground = True
             dj = 0
-
-            # DESTRO BLOCK LOGIC
-            if block.get("kind") == "destro":
-                if not block["breaking"]:
-                    block["breaking"] = True
-                    block["break_timer"] = pygame.time.get_ticks()
-
-
-            # SPHERE SLIP LOGIC
+            if block.get("kind") == "destro" and block["state"] == "idle":
+                block["state"] = "breaking"
+                block["break_timer"] = pygame.time.get_ticks()
             if block.get("kind") == "sphere":
                 radius = rect.width // 2
                 sphere_center_x = rect.centerx
                 player_center_x = player.centerx
-
                 offset = (player_center_x - sphere_center_x) / radius
                 offset = max(-1, min(1, offset))
-
                 SLIP_STRENGTH = 3.2
                 player_velocity_x += offset * SLIP_STRENGTH
 
-            
-
-
-        # ---------- HEAD HIT ----------
+        # Head hit
         elif player_velocity_y < 0:
             player.top = rect.bottom
             player_velocity_y = 0
-    
-    # -------- SURFACE CHECK FOR FRICTION --------
+
+    # Friction
     if on_ground:
         for block in blocks:
             if block.get("kind") == "goo":
                 rect = block["rect"]
-                if (
-                    player.bottom == rect.top and
-                    player.right > rect.left and
-                    player.left < rect.right
-                ):
+                if player.bottom == rect.top and player.right > rect.left and player.left < rect.right:
                     FRICTION = 0.4
                     break
 
-
-
+# -------------------- ANIMATION --------------------
 def get_current_sprite():
     global frame_index
-
-    # Double jump has priority
     if jumping and double_jumping:
         frames = DOUBLE_JUMP_LEFT_FRAMES if facing_left else DOUBLE_JUMP_RIGHT_FRAMES
     elif jumping:
@@ -282,24 +208,15 @@ def get_current_sprite():
         frames = RIGHT_FRAMES
     else:
         return None
-
     if not frames:
         return None
-
-    # possibility of indexerror safe fix
     if frame_index >= len(frames):
         frame_index = len(frames) - 1
-
     return frames[frame_index]
-
-
 
 def update_animation():
     global frame_index, animation_timer, jumping, double_jumping
-
     animation_timer += 1
-
-    # Choose active frames and delay
     if jumping and double_jumping:
         active_frames = DOUBLE_JUMP_LEFT_FRAMES if facing_left else DOUBLE_JUMP_RIGHT_FRAMES
         delay = DOUBLE_JUMP_ANIMATION_DELAY
@@ -322,15 +239,9 @@ def update_animation():
 
     if animation_timer >= delay:
         animation_timer = 0
-
         if jumping:
-            # NON-LOOPING for both jump and double jump
-            if frame_index < len(active_frames) - 1:
-                frame_index += 1
-            else:
-                frame_index = len(active_frames) - 1
+            frame_index = min(frame_index + 1, len(active_frames) - 1)
         else:
-            # Looping walk
             frame_index = (frame_index + 1) % len(active_frames)
 
 def reset_full_player_state():
@@ -340,19 +251,12 @@ def reset_full_player_state():
     global jumping, double_jumping, jumped_from_ground
     global on_ground, dj, jump_pressed
 
-    # Stop motion
     player_velocity_x = 0
     player_velocity_y = 0
-
-    # Reset animation
     frame_index = 0
     animation_timer = 0
-
-    # Reset direction
     facing_left = False
     facing_right = False
-
-    # Reset jump state
     jumping = False
     double_jumping = False
     jumped_from_ground = False
