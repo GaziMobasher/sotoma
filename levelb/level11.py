@@ -8,7 +8,7 @@ def load():
     platform = pygame.Rect(
         int(800),
         int(900),
-        int(200 * SCALE),
+        int(160 * SCALE),
         int(30 * SCALE)
     )
 
