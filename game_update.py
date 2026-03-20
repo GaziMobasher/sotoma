@@ -9,7 +9,7 @@ from player import (
     update_jump_state,
 )
 
-from blockt import dblocks, sblocks, destroblocks, xblocks, gblocks
+from blockt import dblocks, sblocks, destroblocks, xblocks, gblocks, xblockstat
 
 
 
@@ -38,6 +38,7 @@ def update_game(
 
         # Hazard logic
         xblocks.update_xblocks(hazardblocks)
+        xblockstat.update_xblockstat(hazardblocks)
 
         # Destro logic
         destroblocks.update_destroblocks(specialblocks)
@@ -52,3 +53,5 @@ def update_game(
     sblocks.update_drag(normalblocks, button_pressed)
     destroblocks.update_drag(specialblocks, button_pressed)
     gblocks.update_drag(gooblocks, button_pressed)
+    # N
+    xblocks.update_drag(hazardblocks, button_pressed)

@@ -1,6 +1,6 @@
 # Level 4
 import pygame
-from blockt import dblocks, gblocks, xblocks, sblocks
+from blockt import dblocks, gblocks, xblockstat, sblocks
 from config import SCALE
 
 
@@ -15,7 +15,7 @@ def load():
 
     # Rectangular draggable platforms
     blocks = [
-        xblocks.create_xblock(300, 60),
+        xblockstat.create_xblockstat(300, 60),
         gblocks.create_gblock(400, 120),
         gblocks.create_gblock(400, 180),
         gblocks.create_gblock(400, 240),

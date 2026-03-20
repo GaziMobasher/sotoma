@@ -140,7 +140,7 @@ def check_block_collision(blocks):
     # Horizontal movement
     player.x += player_velocity_x
     for block in blocks:
-        if block.get("kind") == "xblock":
+        if block.get("kind") == "xblock" or block.get("kind") == "xblockstat":
             continue
         if block.get("state") in ("falling", "respawning"):
             continue
@@ -154,7 +154,7 @@ def check_block_collision(blocks):
     player.y += player_velocity_y
     on_ground = False
     for block in blocks:
-        if block.get("kind") == "xblock":
+        if block.get("kind") == "xblock" or block.get("kind") == "xblockstat":
             continue
         if block.get("state") in ("falling", "respawning"):
             continue

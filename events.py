@@ -1,5 +1,5 @@
 import pygame
-from blockt import dblocks, sblocks, destroblocks, gblocks
+from blockt import dblocks, sblocks, destroblocks, gblocks, xblocks
 
 def handle_events(
     normalblocks,
@@ -27,16 +27,21 @@ def handle_events(
                 button_pressed = False
                 return True, button_pressed, reset_fn(current_level)
 
-            # Drag these
             dblocks.handle_mouse_down(normalblocks, mx, my, button_pressed)
             sblocks.handle_mouse_down(normalblocks, mx, my, button_pressed)
             destroblocks.handle_mouse_down(specialblocks, mx, my, button_pressed)
             gblocks.handle_mouse_down(gooblocks, mx, my, button_pressed)
+
+            # NEW
+            xblocks.handle_mouse_down(hazardblocks, mx, my, button_pressed)
 
         if event.type == pygame.MOUSEBUTTONUP:
             dblocks.handle_mouse_up(normalblocks)
             sblocks.handle_mouse_up(normalblocks)
             destroblocks.handle_mouse_up(specialblocks)
             gblocks.handle_mouse_up(gooblocks)
+
+            # NEW
+            xblocks.handle_mouse_up(hazardblocks)
 
     return True, button_pressed, None

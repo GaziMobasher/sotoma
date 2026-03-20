@@ -1,6 +1,9 @@
 # render.py
 import pygame
 from player import get_current_sprite, update_animation
+from blockt import xblocks
+
+
 
 def draw_world(
     screen,
@@ -28,6 +31,10 @@ def draw_world(
     update_animation()
     sprite = get_current_sprite()
     screen.blit(sprite or assets["player"], player.topleft)
+    
+    # Drawing bounds on xblock search
+    xblock_list = [b for b in blocks if b.get("kind") == "xblock"]
+    xblocks.draw_bounds(screen, xblock_list)
 
     # Blocks
     for block in blocks:
@@ -58,6 +65,8 @@ def draw_world(
 
         elif block["kind"] == "xblock":
             screen.blit(assets["xplat"], (rect.x, rect.y))
+        elif block["kind"] == "xblockstat":
+            screen.blit(assets["xplat"], (rect.x, rect.y))
 
         elif block["kind"] == "goo":
             screen.blit(assets["gplat"], (rect.x, rect.y))
@@ -66,3 +75,4 @@ def draw_world(
     screen.blit(assets["start"], (ui["go"].x + 10, ui["go"].y - 5))
     screen.blit(assets["back"], (ui["back"].x + 10, ui["back"].y - 5))
     screen.blit(assets["exit"], (exit_rect.x + 10, exit_rect.y - 5))
+    

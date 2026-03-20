@@ -1,6 +1,6 @@
 # Level 4
 import pygame
-from blockt import dblocks, sblocks, destroblocks, xblocks
+from blockt import dblocks, sblocks, destroblocks, xblockstat
 from config import SCALE
 
 
@@ -18,7 +18,7 @@ def load():
         destroblocks.create_destroblock(200, 450),
         destroblocks.create_destroblock(80, 450),
         sblocks.create_sblock(190, 180),
-        xblocks.create_xblock(500, 180),
+        xblockstat.create_xblockstat(500, 180),
         
     ]
 

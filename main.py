@@ -55,9 +55,9 @@ platform, blocks, exit_rect = levels.load_level(current_level)
 
 # Split blocks into separate lists
 specialblocks = [b for b in blocks if b.get("kind") == "destro"]
-hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
+hazardblocks = [b for b in blocks if b.get("kind") == "xblock" or b.get("kind") == "xblockstat"]
 gooblocks = [b for b in blocks if b.get("kind") == "goo"]
-normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock", "goo")]
+normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock", "goo", "xblockstat")]
 
 
 # -------------------- GAME STATE --------------------
@@ -89,8 +89,8 @@ while running:
 
         # Re-split after reset
         specialblocks = [b for b in blocks if b.get("kind") == "destro"]
-        hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
-        normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock")]
+        hazardblocks = [b for b in blocks if b.get("kind") == "xblock" or b.get("kind") == "xblockstat"]
+        normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock", "xblockstat")]
         gooblocks = [b for b in blocks if b.get("kind") == "goo"]
 
 
@@ -119,8 +119,8 @@ while running:
 
         #Re-split after level change
         specialblocks = [b for b in blocks if b.get("kind") == "destro"]
-        hazardblocks = [b for b in blocks if b.get("kind") == "xblock"]
-        normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock")]
+        hazardblocks = [b for b in blocks if b.get("kind") == "xblock" or b.get("kind") == "xblockstat"]
+        normalblocks = [b for b in blocks if b.get("kind") not in ("destro", "xblock", "xblockstat")]
         gooblocks = [b for b in blocks if b.get("kind") == "goo"]
 
 
