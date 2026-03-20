@@ -126,4 +126,4 @@ def draw_bounds(screen, blocks):
 
     # Assume all xblocks share same bound
     bound = blocks[0]["bound"]
-    pygame.draw.rect(screen, (0, 200, 255), bound, 3)
+    pygame.draw.rect(screen, (255, 5, 5), bound, 3)

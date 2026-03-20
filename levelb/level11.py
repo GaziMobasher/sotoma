@@ -17,12 +17,12 @@ def load():
         sblocks.create_sblock(500, 180),
     ]
 
-    # OPTIONAL XBLOCK SETUP
+    # XBLOCK SETUP
     bound_rect = pygame.Rect(
-        int(100 * SCALE),
-        int(200 * SCALE),
-        int(500 * SCALE),
-        int(300 * SCALE)
+        int(250 * SCALE),
+        int(70 * SCALE),
+        int(300 * SCALE),
+        int(90 * SCALE)
     )
 
     xblock_list = [
